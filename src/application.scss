@@ -1,0 +1,16 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.header {
+  height: 80px;
+  background-color: gray;
+}
+
+.main {
+  flex: 1;
+  background-color: teal;
+}

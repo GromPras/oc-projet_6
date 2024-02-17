@@ -1,0 +1,17 @@
+{
+  "name": "p6_juststreamit",
+  "version": "1.0.0",
+  "description": "## Français",
+  "main": "src/application.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx sass src/application.scss public/style/application.css && npx tsc",
+    "start": "npx sass --watch src/application.scss public/style/application.css && npx tsc --watch"
+  },
+  "author": "Jérôme Peyras",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.70.0",
+    "typescript": "^5.3.3"
+  }
+}

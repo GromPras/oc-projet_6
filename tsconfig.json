@@ -1,0 +1,6 @@
+{
+  "include": ["src/application.ts"],
+  "compilerOptions": {
+    "outDir": "./public/scripts/"
+  }
+}
