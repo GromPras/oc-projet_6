@@ -1,18 +1,52 @@
+html {
+  height: 100%;
+}
+
 body {
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  height: 100%;
+  min-height: 100%;
+  padding: 2px 4px;
+  overflow-x: hidden;
 }
 
 .header {
   height: 80px;
-  background-color: gray;
+  background-color: transparent;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
 }
 
 .main {
   flex: 1;
-  background-color: teal;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.flex-col {
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.border-md {
+  border: solid 2px black;
+}
+
+.w-full {
+  width: 100%;
 }
 
 /*# sourceMappingURL=application.css.map */

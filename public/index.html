@@ -4,35 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JustStreamIt</title>
+    <link rel="stylesheet" href="style/reset.css" />
     <link rel="stylesheet" href="style/application.css" />
     <script src="scripts/application.js" defer></script>
   </head>
   <body>
     <!-- TODO: header -->
-    <header class="header">
+    <header class="header container">
       <div class="header__logo">
-        <p>Logo</p>
+        <img src="img/logo.png" alt="Logo JustStreamIt" height="72" />
       </div>
       <div class="header__nav">
         <p>Menu</p>
       </div>
     </header>
     <!-- TODO: main -->
-    <main class="main">
-      <div class="main__container">
-        <div class="container">
-          <p>Featured film</p>
-        </div>
-        <div class="container">
-          <p>Carousel 1</p>
-        </div>
-        <div class="container"><p>Carousel 2</p></div>
-        <div class="container">
-          <p>Carousel 3</p>
-        </div>
-        <div class="container">
-          <p>Carousel 4</p>
-        </div>
+    <main class="main container flex-col">
+      <div class="container border-md w-full" id="hero">
+        <p>Featured film</p>
+      </div>
+      <div class="container" id="cat1">
+        <p>Carousel 1</p>
+      </div>
+      <div class="container"><p>Carousel 2</p></div>
+      <div class="container">
+        <p>Carousel 3</p>
+      </div>
+      <div class="container">
+        <p>Carousel 4</p>
       </div>
     </main>
     <!-- TODO: footer -->

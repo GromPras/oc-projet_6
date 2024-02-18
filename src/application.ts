@@ -21,28 +21,47 @@ const apiCall = async (
     query += `sort_by=${asc ? "-" : ""}${sortBy}&`;
   }
 
-  const response = await fetch(`
+  try {
+    const response = await fetch(`
         ${apiUrl}/${endpoint}?${query}page_size=${pageSize}`);
-  const { results } = await response.json();
-  return results;
+    const { results } = await response.json();
+    return results;
+  } catch (error) {}
 };
 console.log("JustStreamIt");
 
 const getBestMovies = async (category?: string): Promise<any> => {
-  const results = await apiCall("titles", 7, category ? category : "", {
-    sortBy: "imdb_score",
-  });
-  //localhost:8000/api/v1/titles?genre=sci-fi&sort_by=-imdb_score&page_size=7
-  const bestMovies = results;
-  console.log(bestMovies);
-  const bestMovieOverall = bestMovies[0];
-  console.log(bestMovieOverall);
+  try {
+    const results = await apiCall(
+      "titles",
+      7,
+      category ? category : undefined,
+      {
+        sortBy: "imdb_score",
+      }
+    );
+    const bestMovies = results;
+    return bestMovies;
+  } catch (error) {}
 };
 
 const getCategories = async (): Promise<any> => {
-  const results = await apiCall("genres", 25);
-  console.log(results);
+  try {
+    const results = await apiCall("genres", 25).then(() => results);
+  } catch (error) {}
 };
 
-getBestMovies();
-getCategories();
+const carousel = document.getElementById("cat1");
+getBestMovies().then((response) => {
+  response.forEach((m) => {
+    const div = document.createElement("div");
+    const img = document.createElement("img");
+    img.src = m.image_url;
+    img.alt = m.title;
+    div.appendChild(img);
+    carousel.appendChild(div);
+  });
+});
+// const bestSFMovies = getBestMovies("Sci-Fi");
+// const categories = getCategories();
+// console.log(categories);
