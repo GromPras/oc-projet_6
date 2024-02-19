@@ -34,7 +34,7 @@ const getBestMovies = async (category?: string): Promise<any> => {
   try {
     const results = await apiCall(
       "titles",
-      7,
+      8,
       category ? category : undefined,
       {
         sortBy: "imdb_score",
@@ -47,13 +47,13 @@ const getBestMovies = async (category?: string): Promise<any> => {
 
 const getCategories = async (): Promise<any> => {
   try {
-    const results = await apiCall("genres", 25).then(() => results);
+    const results = await apiCall("genres", 25);
+    return results;
   } catch (error) {}
 };
 
-const carousel = document.getElementById("cat1");
-getBestMovies().then((response) => {
-  response.forEach((m) => {
+const createCarousel = (carousel, movies) => {
+  movies.forEach((m) => {
     const div = document.createElement("div");
     const img = document.createElement("img");
     img.src = m.image_url;
@@ -61,7 +61,46 @@ getBestMovies().then((response) => {
     div.appendChild(img);
     carousel.appendChild(div);
   });
+  return carousel;
+};
+
+const createCarouselSection = (id, category) => {
+  getBestMovies(category).then((response) => {
+    id.firstChild.textContent = `Best ${category} Movies`;
+    id = createCarousel(id, response);
+  });
+  return id;
+};
+
+const featuredFilm = document.getElementById("hero");
+let bestMoviesCarousel = document.getElementById("bestOverall");
+getBestMovies().then((response) => {
+  const movie = response[0];
+  const div = document.createElement("div");
+  const img = document.createElement("img");
+  img.src = movie.image_url;
+  img.alt = movie.title;
+  div.appendChild(img);
+  featuredFilm.appendChild(div);
+  bestMoviesCarousel.firstChild.textContent = "Best Movies Overall";
+  bestMoviesCarousel = createCarousel(bestMoviesCarousel, response.slice(1));
 });
-// const bestSFMovies = getBestMovies("Sci-Fi");
-// const categories = getCategories();
-// console.log(categories);
+// Create first cat best of
+let bestOfCat1 = document.getElementById("cat1");
+bestOfCat1 = createCarouselSection(bestOfCat1, "Sci-Fi");
+
+// Create second cat best of
+let bestOfCat2 = document.getElementById("cat2");
+bestOfCat2 = createCarouselSection(bestOfCat2, "Biography");
+
+// Create third cat best of
+let bestOfCat3 = document.getElementById("cat3");
+bestOfCat3 = createCarouselSection(bestOfCat3, "Comedy");
+
+let categoriesList: HTMLUListElement =
+  document.getElementsByClassName("header__nav__list");
+getCategories().then((response) => {
+  response.forEach((e) => {
+    categoriesList.appendChild();
+  });
+});

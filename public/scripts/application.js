@@ -77,7 +77,7 @@ var getBestMovies = function (category) { return __awaiter(_this, void 0, void 0
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, apiCall("titles", 7, category ? category : undefined, {
+                return [4 /*yield*/, apiCall("titles", 8, category ? category : undefined, {
                         sortBy: "imdb_score",
                     })];
             case 1:
@@ -92,15 +92,15 @@ var getBestMovies = function (category) { return __awaiter(_this, void 0, void 0
     });
 }); };
 var getCategories = function () { return __awaiter(_this, void 0, void 0, function () {
-    var results_1, error_3;
+    var results, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, apiCall("genres", 25).then(function () { return results_1; })];
+                return [4 /*yield*/, apiCall("genres", 25)];
             case 1:
-                results_1 = _a.sent();
-                return [3 /*break*/, 3];
+                results = _a.sent();
+                return [2 /*return*/, results];
             case 2:
                 error_3 = _a.sent();
                 return [3 /*break*/, 3];
@@ -108,9 +108,8 @@ var getCategories = function () { return __awaiter(_this, void 0, void 0, functi
         }
     });
 }); };
-var carousel = document.getElementById("cat1");
-getBestMovies().then(function (response) {
-    response.forEach(function (m) {
+var createCarousel = function (carousel, movies) {
+    movies.forEach(function (m) {
         var div = document.createElement("div");
         var img = document.createElement("img");
         img.src = m.image_url;
@@ -118,7 +117,40 @@ getBestMovies().then(function (response) {
         div.appendChild(img);
         carousel.appendChild(div);
     });
+    return carousel;
+};
+var createCarouselSection = function (id, category) {
+    getBestMovies(category).then(function (response) {
+        id.firstChild.textContent = "Best ".concat(category, " Movies");
+        id = createCarousel(id, response);
+    });
+    return id;
+};
+var featuredFilm = document.getElementById("hero");
+var bestMoviesCarousel = document.getElementById("bestOverall");
+getBestMovies().then(function (response) {
+    var movie = response[0];
+    var div = document.createElement("div");
+    var img = document.createElement("img");
+    img.src = movie.image_url;
+    img.alt = movie.title;
+    div.appendChild(img);
+    featuredFilm.appendChild(div);
+    bestMoviesCarousel.firstChild.textContent = "Best Movies Overall";
+    bestMoviesCarousel = createCarousel(bestMoviesCarousel, response.slice(1));
 });
-// const bestSFMovies = getBestMovies("Sci-Fi");
-// const categories = getCategories();
-// console.log(categories);
+// Create first cat best of
+var bestOfCat1 = document.getElementById("cat1");
+bestOfCat1 = createCarouselSection(bestOfCat1, "Sci-Fi");
+// Create second cat best of
+var bestOfCat2 = document.getElementById("cat2");
+bestOfCat2 = createCarouselSection(bestOfCat2, "Biography");
+// Create third cat best of
+var bestOfCat3 = document.getElementById("cat3");
+bestOfCat3 = createCarouselSection(bestOfCat3, "Comedy");
+var categoriesList = document.getElementsByClassName("header__nav__list");
+getCategories().then(function (response) {
+    response.forEach(function (e) {
+        categoriesList.appendChild();
+    });
+});
