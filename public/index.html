@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="smooth-transition">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,7 +13,7 @@
     <script src="./scripts/application.js" defer></script>
   </head>
   <body>
-    <!-- TODO: header -->
+    <!-- TODO: Populate categories -->
     <header class="header">
       <div class="header__nav">
         <div class="header__logo">
@@ -22,8 +22,7 @@
         <div class="nav">
           <details>
             <summary>Categories</summary>
-            <ul class="nav__list">
-            </ul>
+            <ul class="nav__list"></ul>
           </details>
         </div>
       </div>
@@ -34,8 +33,24 @@
       </div>
     </header>
     <!-- TODO: main -->
-    <main class="main container flex-col">
-    /main>
+    <main class="main">
+      <div class="hero smooth-transition" id="hero">
+        <div class="hero-img-overlay w-full"></div>
+        <div class="hero__content">
+          <h2>Lorem ipsum dolor sit amet</h2>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam
+            placeat, id, nobis incidunt magnam at distinctio repellendus
+            necessitatibus, ullam voluptate sed iusto et sequi cupiditate quas
+            nulla. Atque, pariatur odit.
+          </p>
+          <div class="btns">
+            <button class="btn">&#9654; Play</button>
+            <button class="btn btn-alt">&#128712; More info</button>
+          </div>
+        </div>
+      </div>
+    </main>
     <!-- TODO: footer -->
     <footer class="footer">
       <p>JustStreamIt</p>

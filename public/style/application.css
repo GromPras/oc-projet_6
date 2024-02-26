@@ -1,10 +1,24 @@
+html {
+  background-color: rgb(10, 10, 10);
+  background: linear-gradient(to right bottom, #d16ba5, #b35699, #93438d, #723181, #502274) no-repeat;
+  background-attachment: fixed;
+}
+
 body {
   margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: start;
   color: #fff;
-  background: rgb(10, 10, 10);
+  min-height: 100%;
+}
+
+h2 {
+  font-size: 3em;
+}
+
+p {
+  font-size: 1em;
 }
 
 .header {
@@ -39,12 +53,102 @@ body {
 .header .header__nav details .nav__list li:not(.active):hover {
   color: rgb(75, 85, 99);
 }
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  width: 100%;
+  justify-content: start;
+  align-items: center;
+}
+
+.hero {
+  width: 90%;
+  border: solid rgba(255, 255, 255, 0.5) 1px;
+  border-radius: 8px;
+  margin-top: 100px;
+  border-radius: 8px;
+  position: relative;
+  background-image: url("https://picsum.photos/1080/720");
+  background-size: cover;
+  background-attachment: inherit;
+  display: flex;
+}
+.hero .hero-img-overlay {
+  position: absolute;
+  border-radius: 8px;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  width: 100%;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.5004202365) 6%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.5004202365) 94%, rgb(0, 0, 0) 100%);
+}
+.hero .hero__content {
+  z-index: 10;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: start;
+  padding: 1em;
+  gap: 1em;
+  margin-top: 25%;
+}
+.hero .hero__content p {
+  text-shadow: rgb(10, 10, 10);
+}
+.hero .hero__content .btns {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  gap: 0.25em;
+}
+.hero .hero__content .btns .btn {
+  flex: 1;
+}
+
+.footer {
+  flex: 1;
+}
+
 .btn-icon {
   background-color: transparent;
   color: #fff;
   border: none;
   cursor: pointer;
   font-size: 2em;
+}
+
+.smooth-transition {
+  transition: all 0.3s ease;
+}
+
+@media screen and (min-width: 1024px) {
+  html {
+    background: rgb(10, 10, 10);
+  }
+  h2 {
+    font-size: 5em;
+  }
+  p {
+    font-size: 1.2em;
+  }
+  .hero {
+    width: 100%;
+    border: none;
+    border-radius: 0px;
+    margin-top: 0px;
+    background-attachment: fixed;
+  }
+  .hero .hero-img-overlay {
+    border-radius: 0px;
+  }
+  .hero .hero__content {
+    max-width: 50%;
+    margin-bottom: 25%;
+  }
 }
 
 /*# sourceMappingURL=application.css.map */
