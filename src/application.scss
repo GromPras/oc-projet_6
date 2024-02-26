@@ -1,5 +1,11 @@
+$white: #fff;
+$gray: rgb(75, 85, 99);
+$dark: rgb(10, 10, 10);
+$item-per-group: 4;
+
 html {
   height: 100%;
+  width: 100%;
 }
 body {
   display: flex;
@@ -8,8 +14,8 @@ body {
   align-items: center;
   height: 100%;
   min-height: 100%;
-  padding: 2px 4px;
-  overflow-x: hidden;
+  overflow-x: clip;
+  width: 100%;
 }
 
 .header {
@@ -20,18 +26,41 @@ body {
   top: 0;
   left: 0;
   z-index: 9999;
+  color: $white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 2rem;
+  .header__nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 2rem;
+    cursor: pointer;
+    .header__nav__list {
+      display: flex;
+      li:not(.active):hover {
+        color: $gray;
+      }
+    }
+  }
 }
 
 .main {
   flex: 1;
   width: 100%;
+  background: $dark;
 }
 
 .container {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 10px 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-auto-flow: column;
 }
 
 .flex-col {
@@ -46,6 +75,155 @@ body {
 
 .w-full {
   width: 100%;
+}
+
+.hero {
+  position: relative;
+  img {
+    object-fit: contain;
+    width: 100%;
+  }
+  .hero-img-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 100%;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.5004202364539565) 6%,
+      rgba(0, 0, 0, 0) 15%,
+      rgba(0, 0, 0, 0) 85%,
+      rgba(0, 0, 0, 0.5004202364539565) 94%,
+      rgba(0, 0, 0, 1) 100%
+    );
+  }
+  .hero__content {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    color: $white;
+    h2 {
+      font-size: 5em;
+    }
+    p {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.media-carousels {
+  transform: translateY(-14%);
+  position: relative;
+  width: 100%;
+  h3 {
+    width: 100%;
+    text-align: left;
+    margin-left: 5rem;
+    color: $white;
+    font-weight: 700;
+    font-size: 2em;
+    padding: 1rem 2rem;
+  }
+  .carousel {
+    display: flex;
+    justify-content: center;
+    overflow: clip;
+  }
+  .media-group {
+    display: flex;
+    flex-grow: 1;
+    gap: 0.25rem;
+    transform: translateX(-0%);
+    margin: 0 0 0 0.25rem;
+    width: calc(100% - 10rem);
+    img {
+      flex: 0 0 calc(100% / $item-per-group);
+      max-width: calc(calc(100% - 1rem) / $item-per-group);
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+  }
+}
+
+.btns {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn {
+  display: flex;
+  justify-content: center;
+  min-width: 125px;
+  min-height: 65px;
+  border-radius: 4px;
+  background-color: $white;
+  color: #000;
+  padding: 0.5rem 2rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1.75em;
+}
+.btn-alt {
+  background-color: rgba($gray, 0.75);
+  color: $white;
+}
+.btn-icon {
+  background-color: transparent;
+  color: $white;
+  border: none;
+  cursor: pointer;
+  font-size: 2em;
+}
+.slider-btn {
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  padding: 0;
+  background: rgba($gray, 0.5);
+  color: $white;
+  font-size: 5rem;
+  border-radius: 4px;
+  width: 2.5rem;
+  // border-radius: 1rem;
+  // flex-grow: 0;
+  // flex-shrink: 0;
+  // background-color: rgba(255, 255, 255, 0.25);
+  // z-index: 10;
+  // margin: var(--img-gap) 0;
+  // width: var(--handle-size);
+  // cursor: pointer;
+  // font-size: 5rem;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  // color: white;
+  // line-height: 0;
+  // transition: background-color 150ms ease-in-out;
+}
+.slider-btn__left {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.slider-btn__right {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.btn:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+.btn:hover {
+  background-color: rgba($gray, 0.5);
 }
 
 @media screen and (min-width: 375px) {
