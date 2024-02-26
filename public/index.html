@@ -10,7 +10,7 @@
     />
     <link rel="stylesheet" href="style/reset.css" />
     <link rel="stylesheet" href="style/application.css" />
-    <!-- <script src="./scripts/application.js" defer></script> -->
+    <script src="./scripts/application.js" defer></script>
   </head>
   <body>
     <!-- TODO: header -->
@@ -19,10 +19,12 @@
         <div class="header__logo">
           <img src="img/logo--white.png" alt="Logo JustStreamIt" height="72" />
         </div>
-        <div class="header__nav">
-          <ul class="header__nav__list">
-            <li class="active">Home</li>
-          </ul>
+        <div class="nav">
+          <details>
+            <summary>Categories</summary>
+            <ul class="nav__list">
+            </ul>
+          </details>
         </div>
       </div>
       <div class="header__menu">
@@ -33,25 +35,7 @@
     </header>
     <!-- TODO: main -->
     <main class="main container flex-col">
-      <div class="hero w-full" id="hero">
-        <img src="https://picsum.photos/1080/720" alt="Movie title" />
-        <div class="hero-img-overlay w-full"></div>
-        <div class="hero__content">
-          <h2>Movie title</h2>
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laborum
-            dolores perferendis minima porro. Culpa deserunt dolorum commodi ex,
-            enim aspernatur ipsam accusamus, nostrum maxime voluptatibus
-            deleniti consequatur, libero non vel.
-          </p>
-          <div class="btns">
-            <button class="btn">&#9654; Play</button>
-            <button class="btn btn-alt">&#128712; More info</button>
-          </div>
-        </div>
-      </div>
-      <div id="modal"></div>
-    </main>
+    /main>
     <!-- TODO: footer -->
     <footer class="footer">
       <p>JustStreamIt</p>
