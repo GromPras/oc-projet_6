@@ -201,14 +201,16 @@ p {
       border-bottom-right-radius: 4px;
     }
     .media-group {
+      --slider-index: 0;
       grid-row: 1;
       grid-column: span 3 / -1;
       display: flex;
       flex-grow: 1;
       gap: 0.25rem;
-      transform: translateX(-0%);
+      transform: translateX(calc(var(--slider-index) * -100%));
       margin: 0 0 0 2.75rem;
       width: calc(100% - 5.5rem);
+      transition: transform 250ms ease-in-out 0.1s;
       a {
         flex: 0 0 calc(100% / var(--item-per-slide));
         max-width: calc(calc(100% - 1rem) / var(--item-per-slide));

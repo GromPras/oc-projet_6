@@ -1,6 +1,6 @@
 const apiUrl = "http://localhost:8000/api/v1";
 
-const query = async (route: string, params?: {}): Promise<any> => {
+const query = async (route, params) => {
   try {
     const response = await fetch(`${apiUrl}/${route}`, params);
     const results = await response.json();
@@ -11,7 +11,7 @@ const query = async (route: string, params?: {}): Promise<any> => {
   }
 };
 
-const getBestMovies = async (): Promise<any> => {
+const getBestMovies = async () => {
   try {
     const { results } = await query(`titles?sort_by=-imdb_score&page_size=8`);
     return results;
@@ -20,7 +20,7 @@ const getBestMovies = async (): Promise<any> => {
   }
 };
 
-const getBestCategoryMovies = async (category: string): Promise<any> => {
+const getBestCategoryMovies = async (category) => {
   try {
     const { results } = await query(
       `titles?genre=${category}&sort_by=-imdb_score&page_size=7`
@@ -31,7 +31,7 @@ const getBestCategoryMovies = async (category: string): Promise<any> => {
   }
 };
 
-const getMovie = async (movieId: string): Promise<any> => {
+const getMovie = async (movieId) => {
   try {
     const result = await query(`titles/${movieId}`);
     return result;
@@ -40,11 +40,7 @@ const getMovie = async (movieId: string): Promise<any> => {
   }
 };
 
-const createMediaScroller = (
-  category: string,
-  index: number,
-  medias: [any]
-): string => {
+const createMediaScroller = (category, index, medias) => {
   const mediaGroup = document.createElement("div");
   medias.forEach((m) => {
     mediaGroup.insertAdjacentHTML(
@@ -58,7 +54,7 @@ const createMediaScroller = (
     <div class="media-scroller__header">
         <h2 class="media-scroller__title">${category} best movies</h2>
         <div class="media-scroller__groups">
-            <div class="scroller-group active-group"></div>
+            <div class="scroller-group"></div>
             <div class="scroller-group"></div>
         </div>
     </div>
@@ -71,24 +67,6 @@ const createMediaScroller = (
     </div>
 </div>`;
   return mediaScroller;
-};
-
-const handleSlide = (classList: string, id: string) => {
-  let mediaGroup;
-  if (classList.includes("left")) {
-    mediaGroup = document
-      .getElementById(id)
-      .parentElement.querySelector(".media-group");
-    console.log(mediaGroup.style.transform);
-
-    mediaGroup.style.transform = "translateX(100%)";
-  } else {
-    mediaGroup = document
-      .getElementById(id)
-      .parentElement.querySelector(".media-group");
-    mediaGroup.style.transform = "translateX(-100%)";
-  }
-  console.log(mediaGroup.style);
 };
 
 const featuredFilm = document.getElementById("hero");
@@ -114,13 +92,33 @@ featuredCategories.forEach(async (c, index) => {
     const mediaScroller = createMediaScroller(c, index, bestCategoryMovies);
 
     mainContent.insertAdjacentHTML("beforeend", mediaScroller);
-    const sliderHandles = document.querySelectorAll(".handle");
-    sliderHandles.forEach((e) => {
-      e.addEventListener("click", function () {
-        handleSlide(e.classList.toString(), e.getAttribute("id"));
-      });
-    });
   } catch (error) {
     console.log(error);
   }
+});
+
+const onHandleClick = (handle) => {
+  const slider = handle
+    .closest(".media-scroller__content")
+    .querySelector(".media-group");
+  const sliderIndex = parseInt(
+    getComputedStyle(slider).getPropertyValue("--slider-index")
+  );
+  if (handle.classList.contains("left-handle")) {
+    slider.style.setProperty("--slider-index", sliderIndex - 1);
+  }
+  if (handle.classList.contains("right-handle")) {
+    slider.style.setProperty("--slider-index", sliderIndex + 1);
+  }
+};
+
+document.addEventListener("click", (e) => {
+  let handle;
+  if (e.target.matches(".handle")) {
+    handle = e.target;
+  } else {
+    handle = e.target.closest(".handle");
+  }
+
+  onHandleClick(handle);
 });
