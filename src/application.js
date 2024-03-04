@@ -52,7 +52,7 @@ const createMediaScroller = (category, index, medias) => {
   const mediaScroller = `
 <div class="media-scroller">
     <div class="media-scroller__header">
-        <h2 class="media-scroller__title">${category} best movies</h2>
+        <h2 class="media-scroller__title">${category}</h2>
         <div class="media-scroller__groups">
             <div class="scroller-group"></div>
             <div class="scroller-group"></div>
@@ -69,37 +69,6 @@ const createMediaScroller = (category, index, medias) => {
   return mediaScroller;
 };
 
-const featuredFilm = document.getElementById("hero");
-const featuredFilmContent = document.querySelector(".hero__content");
-const heroLink = document.getElementById("heroLink");
-getBestMovies().then(async (response) => {
-  const movie = await getMovie(response[0].id);
-  featuredFilm.style.backgroundImage = `url("${movie.image_url}")`;
-  const heroContent = `<h2>${movie.title}</h2><p>${movie.description}</p>`;
-  featuredFilmContent.insertAdjacentHTML("afterbegin", heroContent);
-  heroLink.insertAdjacentHTML(
-    "afterbegin",
-    `<a href="${apiUrl}/titles/${movie.id}">&#128712; More info</a>`
-  );
-  response.shift();
-  const mediaScroller = createMediaScroller("", 0, response);
-  mainContent.insertAdjacentHTML("afterbegin", mediaScroller);
-});
-
-const featuredCategories = ["Sci-Fi", "Biography", "Comedy"];
-const mainContent = document.querySelector(".main__content");
-
-featuredCategories.forEach(async (c, index) => {
-  try {
-    const bestCategoryMovies = await getBestCategoryMovies(c);
-    const mediaScroller = createMediaScroller(c, index + 1, bestCategoryMovies);
-
-    mainContent.insertAdjacentHTML("beforeend", mediaScroller);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 const onHandleClick = (handle) => {
   const slider = handle
     .closest(".media-scroller__content")
@@ -115,20 +84,89 @@ const onHandleClick = (handle) => {
   }
 };
 
-document.addEventListener("click", (e) => {
-  let handle;
-  let movieLink;
-  e.preventDefault();
-  if (e.target.matches("img")) {
-    movieLink = e.target;
+onMoreInfoClick = async (data) => {
+  const response = await query(`titles/${data.id}`);
+  console.log(response);
+  const modal = document.getElementById("modal");
+  const card = modal.querySelector(".card");
+  document.body.classList.toggle("noscroll");
+  modal.classList.toggle("show-modal");
+  card.style.backgroundImage = `url("${response.image_url}")`;
+  card.querySelector(".card__content").insertAdjacentHTML(
+    "afterbegin",
+    `
+  <h2>${response.title}</h2>
+  <p>${response.genres.toString()}</p>
+  <p>${response.date_published}</p>
+  <p>${response.rated}</p>
+  <p>${response.imbd_score}</p>
+  <p>${response.directors.toString()}</p>
+  <p>${response.actors.toString()}</p>
+  <p>${response.duration}</p>
+  <p>${response.countries.toString()}</p>
+  <p>${response.worldwide_gross_income}</p>
+  <p>${response.long_description}</p>
+  `
+  );
+};
 
-    return;
-  }
-  if (e.target.matches(".handle")) {
-    handle = e.target;
-  } else {
-    handle = e.target.closest(".handle");
-  }
+// Create Hero Section and first Slider
+const featuredFilm = document.getElementById("hero");
+const featuredFilmContent = document.querySelector(".hero__content");
+const heroLink = document.getElementById("heroLink");
+getBestMovies().then(async (response) => {
+  const movie = await getMovie(response[0].id);
+  featuredFilm.style.backgroundImage = `url("${movie.image_url}")`;
+  const heroContent = `<h2>${movie.title}</h2><p>${movie.description}</p>`;
+  featuredFilmContent.insertAdjacentHTML("afterbegin", heroContent);
+  heroLink.insertAdjacentHTML(
+    "afterbegin",
+    `<a href="${apiUrl}/titles/${movie.id}" class="movie-link" data-id="${movie.id}">&#128712; More info</a>`
+  );
+  response.shift();
+  const mediaScroller = createMediaScroller(
+    "Films les mieux notés",
+    0,
+    response
+  );
+  mainContent.insertAdjacentHTML("afterbegin", mediaScroller);
 
-  onHandleClick(handle);
+  // Listen for clicks on handles
+  const sliderHandles = document.querySelectorAll(".handle");
+  sliderHandles.forEach(function (element) {
+    element.addEventListener("click", function (event) {
+      onHandleClick(event.target);
+    });
+  });
+
+  // Listen for click on More Info or movies
+  const moreInfo = document.querySelectorAll(".movie-link");
+  moreInfo.forEach(function (element) {
+    element.addEventListener("click", function (event) {
+      event.preventDefault();
+      onMoreInfoClick(event.target.dataset);
+    });
+  });
+});
+
+// Create other Sliders
+const featuredCategories = ["Sci-Fi", "Biography", "Comedy"];
+const mainContent = document.querySelector(".main__content");
+
+featuredCategories.forEach(async (c, index) => {
+  try {
+    const bestCategoryMovies = await getBestCategoryMovies(c);
+    const mediaScroller = createMediaScroller(c, index + 1, bestCategoryMovies);
+
+    mainContent.insertAdjacentHTML("beforeend", mediaScroller);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const closeModal = document.getElementById("close-modal");
+closeModal.addEventListener("click", () => {
+  const modal = document.getElementById("modal");
+  modal.classList.remove("show-modal");
+  document.body.classList.remove("noscroll");
 });

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx sass src/application.scss public/style/application.css && npx tsc",
-    "start": "npx sass --watch src/application.scss public/style/application.css && npx tsc --watch"
+    "start": "npx sass --watch src/application.scss public/style/application.css"
   },
   "author": "Jérôme Peyras",
   "license": "ISC",

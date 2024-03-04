@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="style/application.css" />
     <script src="../src/application.js" defer></script>
   </head>
-  <body>
+  <body class="">
     <!-- TODO: Populate categories -->
     <header class="header">
       <div class="header__nav">
@@ -44,7 +44,14 @@
         </div>
       </div>
       <div class="main__content"></div>
-      <div class="modal"></div>
+      <div class="modal" id="modal">
+        <div class="modal__content">
+          <div class="card">
+            <button id="close-modal" class="btn-icon">&#10005;</button>
+            <div class="card__content"></div>
+          </div>
+        </div>
+      </div>
     </main>
     <!-- TODO: footer -->
     <footer class="footer">
