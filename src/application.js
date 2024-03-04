@@ -45,7 +45,7 @@ const createMediaScroller = (category, index, medias) => {
   medias.forEach((m) => {
     mediaGroup.insertAdjacentHTML(
       "beforeend",
-      `<a href="${apiUrl}/titles/${m.id}"><img src="${m.image_url}" alt="${m.title}"></a>`
+      `<a class="movie-link" href="${apiUrl}/titles/${m.id}"><img src="${m.image_url}" alt="${m.title}" data-id="${m.id}"></a>`
     );
   });
 
@@ -81,6 +81,9 @@ getBestMovies().then(async (response) => {
     "afterbegin",
     `<a href="${apiUrl}/titles/${movie.id}">&#128712; More info</a>`
   );
+  response.shift();
+  const mediaScroller = createMediaScroller("", 0, response);
+  mainContent.insertAdjacentHTML("afterbegin", mediaScroller);
 });
 
 const featuredCategories = ["Sci-Fi", "Biography", "Comedy"];
@@ -89,7 +92,7 @@ const mainContent = document.querySelector(".main__content");
 featuredCategories.forEach(async (c, index) => {
   try {
     const bestCategoryMovies = await getBestCategoryMovies(c);
-    const mediaScroller = createMediaScroller(c, index, bestCategoryMovies);
+    const mediaScroller = createMediaScroller(c, index + 1, bestCategoryMovies);
 
     mainContent.insertAdjacentHTML("beforeend", mediaScroller);
   } catch (error) {
@@ -114,6 +117,13 @@ const onHandleClick = (handle) => {
 
 document.addEventListener("click", (e) => {
   let handle;
+  let movieLink;
+  e.preventDefault();
+  if (e.target.matches("img")) {
+    movieLink = e.target;
+
+    return;
+  }
   if (e.target.matches(".handle")) {
     handle = e.target;
   } else {

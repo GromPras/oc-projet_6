@@ -3,6 +3,7 @@ html {
   background: linear-gradient(to right bottom, #d16ba5, #b35699, #93438d, #723181, #502274) no-repeat;
   background-attachment: fixed;
   --item-per-slide: 2;
+  --item-per-group: 7;
 }
 
 body {
@@ -301,13 +302,13 @@ p {
 }
 @media screen and (min-width: 1440px) {
   html {
-    --item-per-slide: 4;
+    --item-per-slide: 5;
   }
   .hero .hero__content {
     max-width: 50%;
   }
 }
-@media screen and (min-width: 1920px) {
+@media screen and (min-width: 1921px) {
   html {
     --item-per-slide: 7;
   }
