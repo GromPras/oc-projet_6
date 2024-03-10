@@ -2,11 +2,11 @@ html {
   background-color: rgb(10, 10, 10);
   background: linear-gradient(to right bottom, #d16ba5, #b35699, #93438d, #723181, #502274) no-repeat;
   background-attachment: fixed;
-  --item-per-slide: 2;
   --item-per-group: 7;
 }
 
 body {
+  --item-per-slide: 2;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -145,18 +145,18 @@ p {
   font-size: 2.5em;
   text-shadow: 0px 0px 8px rgba(10, 10, 10, 0.75);
 }
-.media-scroller .media-scroller__header .media-scroller__groups {
+.media-scroller .media-scroller__header .media-scroller__progress {
   display: flex;
   justify-content: start;
   align-items: end;
   gap: 0.25em;
 }
-.media-scroller .media-scroller__header .media-scroller__groups .scroller-group {
+.media-scroller .media-scroller__header .media-scroller__progress .scroller-progress {
   min-width: 1.5em;
   min-height: 4px;
   background-color: rgba(75, 85, 99, 0.5);
 }
-.media-scroller .media-scroller__header .media-scroller__groups .active-group {
+.media-scroller .media-scroller__header .media-scroller__progress .active-group {
   background-color: rgba(255, 255, 255, 0.5);
 }
 .media-scroller .media-scroller__content {
@@ -294,7 +294,7 @@ p {
   cursor: pointer;
   font-size: 1.2em;
   width: 100%;
-  max-width: 200px;
+  max-width: 250px;
 }
 
 .btn-alt {
@@ -332,6 +332,8 @@ p {
 @media screen and (min-width: 1024px) {
   html {
     background: rgb(10, 10, 10);
+  }
+  body {
     --item-per-slide: 3;
   }
   h2 {
@@ -363,7 +365,7 @@ p {
   }
 }
 @media screen and (min-width: 1440px) {
-  html {
+  body {
     --item-per-slide: 5;
   }
   .hero .hero__content {
@@ -371,7 +373,7 @@ p {
   }
 }
 @media screen and (min-width: 1921px) {
-  html {
+  body {
     --item-per-slide: 7;
   }
 }

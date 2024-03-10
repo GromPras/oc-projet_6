@@ -40,6 +40,26 @@ const getMovie = async (movieId) => {
   }
 };
 
+const calculateScrollerProgress = () => {
+  const mediaScrollerProgress = document.createElement("div");
+  mediaScrollerProgress.classList.add("media-scroller__progress");
+  const itemsPerSlide = parseInt(
+    getComputedStyle(document.body).getPropertyValue("--item-per-slide")
+  );
+  // const sliderIndex = parseInt(
+  //   getComputedStyle(slider).getPropertyValue("--slider-index")
+  // );
+  const scrollerProgressCount = Math.ceil(7 / itemsPerSlide);
+  for (let i = 0; i < scrollerProgressCount; i++) {
+    mediaScrollerProgress.insertAdjacentHTML(
+      "beforeend",
+      "<div class='scroller-progress'></div>"
+    );
+  }
+  mediaScrollerProgress.children[0].classList.add("active-group");
+  return mediaScrollerProgress;
+};
+
 const createMediaScroller = (category, index, medias) => {
   const mediaGroup = document.createElement("div");
   medias.forEach((m) => {
@@ -48,14 +68,14 @@ const createMediaScroller = (category, index, medias) => {
       `<a class="movie-link" href="${apiUrl}/titles/${m.id}"><img src="${m.image_url}" alt="${m.title}" data-id="${m.id}"></a>`
     );
   });
+  const mediaScrollerProgress = calculateScrollerProgress();
 
   const mediaScroller = `
 <div class="media-scroller">
     <div class="media-scroller__header">
         <h2 class="media-scroller__title">${category}</h2>
-        <div class="media-scroller__groups">
-            <div class="scroller-group"></div>
-            <div class="scroller-group"></div>
+        <div class="media-scroller__progress">
+            ${mediaScrollerProgress.innerHTML}
         </div>
     </div>
     <div class="media-scroller__content">
@@ -70,6 +90,9 @@ const createMediaScroller = (category, index, medias) => {
 };
 
 const onHandleClick = (handle) => {
+  const progress = handle
+    .closest(".media-scroller")
+    .querySelector(".media-scroller__progress");
   const slider = handle
     .closest(".media-scroller__content")
     .querySelector(".media-group");
@@ -78,9 +101,13 @@ const onHandleClick = (handle) => {
   );
   if (handle.classList.contains("left-handle")) {
     slider.style.setProperty("--slider-index", sliderIndex - 1);
+    progress.children[sliderIndex].classList.remove("active-group");
+    progress.children[sliderIndex - 1].classList.add("active-group");
   }
   if (handle.classList.contains("right-handle")) {
     slider.style.setProperty("--slider-index", sliderIndex + 1);
+    progress.children[sliderIndex].classList.remove("active-group");
+    progress.children[sliderIndex + 1].classList.add("active-group");
   }
 };
 
