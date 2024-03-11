@@ -35,6 +35,11 @@ p {
   font-size: 1em;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .header {
   height: 80px;
   width: 100%;
@@ -46,24 +51,31 @@ p {
   left: 0;
   z-index: 50;
   padding: 0.25em 2.75em;
-  .header__nav {
+  .header__menu {
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    cursor: pointer;
-    details {
-      position: relative;
-      summary {
-        list-style: none;
-      }
-      .nav__list {
-        position: absolute;
-        bottom: -2em;
-        left: 0;
-        li:not(.active):hover {
-          color: $gray;
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba($white, 0.5);
+      details {
+        position: relative;
+        summary {
+          list-style: none;
+        }
+        .nav__list {
+          position: absolute;
+          bottom: -2em;
+          left: 0;
+          li:not(.active):hover {
+            color: $gray;
+          }
         }
       }
+    }
+    .active {
+      color: $white;
     }
   }
 }
