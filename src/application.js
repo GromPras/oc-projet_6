@@ -40,15 +40,18 @@ const getMovie = async (movieId) => {
   }
 };
 
-const calculateScrollerProgress = () => {
-  const mediaScrollerProgress = document.createElement("div");
-  mediaScrollerProgress.classList.add("media-scroller__progress");
+const calculateScrollerProgress = (mediaScroller) => {
+  let mediaScrollerProgress = null;
+  if (mediaScroller) {
+    mediaScrollerProgress = mediaScroller;
+  } else {
+    mediaScrollerProgress = document.createElement("div");
+    mediaScrollerProgress.classList.add("media-scroller__progress");
+  }
+  mediaScrollerProgress.innerHTML = "";
   const itemsPerSlide = parseInt(
     getComputedStyle(document.body).getPropertyValue("--item-per-slide")
   );
-  // const sliderIndex = parseInt(
-  //   getComputedStyle(slider).getPropertyValue("--slider-index")
-  // );
   const scrollerProgressCount = Math.ceil(7 / itemsPerSlide);
   for (let i = 0; i < scrollerProgressCount; i++) {
     mediaScrollerProgress.insertAdjacentHTML(
@@ -56,7 +59,6 @@ const calculateScrollerProgress = () => {
       "<div class='scroller-progress'></div>"
     );
   }
-  mediaScrollerProgress.children[0].classList.add("active-group");
   return mediaScrollerProgress;
 };
 
@@ -69,6 +71,7 @@ const createMediaScroller = (category, index, medias) => {
     );
   });
   const mediaScrollerProgress = calculateScrollerProgress();
+  mediaScrollerProgress.children[0].classList.add("active-group");
 
   const mediaScroller = `
 <div class="media-scroller">
@@ -79,7 +82,7 @@ const createMediaScroller = (category, index, medias) => {
         </div>
     </div>
     <div class="media-scroller__content">
-        <button class="handle left-handle" id="left-scroller-${index}">&#8249;</button>
+        <button class="handle left-handle inactive-handle" id="left-scroller-${index}">&#8249;</button>
         <div class="media-group">
             ${mediaGroup.innerHTML}
         </div>
@@ -96,24 +99,43 @@ const onHandleClick = (handle) => {
   const slider = handle
     .closest(".media-scroller__content")
     .querySelector(".media-group");
-  const sliderIndex = parseInt(
+  let sliderIndex = parseInt(
     getComputedStyle(slider).getPropertyValue("--slider-index")
   );
   if (handle.classList.contains("left-handle")) {
+    if (sliderIndex - 1 <= 0) {
+      handle.classList.add("inactive-handle");
+    }
     slider.style.setProperty("--slider-index", sliderIndex - 1);
     progress.children[sliderIndex].classList.remove("active-group");
     progress.children[sliderIndex - 1].classList.add("active-group");
   }
   if (handle.classList.contains("right-handle")) {
-    slider.style.setProperty("--slider-index", sliderIndex + 1);
-    progress.children[sliderIndex].classList.remove("active-group");
-    progress.children[sliderIndex + 1].classList.add("active-group");
+    if (sliderIndex + 1 >= progress.children.length) {
+      progress.children[progress.children.length - 1].classList.remove(
+        "active-group"
+      );
+      sliderIndex = 0;
+      slider.style.setProperty("--slider-index", 0);
+      progress.children[sliderIndex].classList.add("active-group");
+      handle
+        .closest(".media-scroller__content")
+        .querySelector(".left-handle")
+        .classList.add("inactive-handle");
+    } else {
+      handle
+        .closest(".media-scroller__content")
+        .querySelector(".left-handle")
+        .classList.remove("inactive-handle");
+      slider.style.setProperty("--slider-index", sliderIndex + 1);
+      progress.children[sliderIndex].classList.remove("active-group");
+      progress.children[sliderIndex + 1].classList.add("active-group");
+    }
   }
 };
 
 onMoreInfoClick = async (data) => {
   const response = await query(`titles/${data.id}`);
-  console.log(response);
   const modal = document.getElementById("modal");
   const card = modal.querySelector(".card");
   document.body.classList.toggle("noscroll");
@@ -123,16 +145,34 @@ onMoreInfoClick = async (data) => {
     "afterbegin",
     `
   <h2>${response.title}</h2>
-  <p>${response.genres.toString()}</p>
-  <p>${response.date_published}</p>
-  <p>${response.rated}</p>
-  <p>${response.imbd_score}</p>
-  <p>${response.directors.toString()}</p>
-  <p>${response.actors.toString()}</p>
-  <p>${response.duration}</p>
-  <p>${response.countries.toString()}</p>
-  <p>${response.worldwide_gross_income}</p>
-  <p>${response.long_description}</p>
+  <div class="btns">
+    <button class="btn">&#9654; Play</button>
+  </div>
+  <div class="columns">
+    <div class="column span-2">
+      <p><span>${response.date_published}</span> ${response.duration}min</p>
+      <p>${response.rated}</p>
+      <p>Score IMDB: ${response.imdb_score}</p>
+      <h3>Description:</h3>
+      <p>${response.long_description}</p>
+    </div>
+    <div class="column">
+      <h3>Réalisateurs.rices:</h3>
+      <p>${response.directors.toString()}</p>
+      <h3>Acteurs.rices:</h3>
+      <p>${response.actors.toString()}</p>
+      <h4>Genre(s):</h4>
+      <p>${response.genres.toString()}</p>
+      <h4>Origine:</h4>
+      <p>${response.countries.toString()}</p>
+      <h4>Revenus mondiaux:</h4>
+      <p>${
+        response.worldwide_gross_income
+          ? response.worldwide_gross_income
+          : "Inconnu"
+      }</p>
+    </div>
+  </div>
   `
   );
 };
@@ -174,6 +214,16 @@ getBestMovies().then(async (response) => {
       onMoreInfoClick(event.target.dataset);
     });
   });
+
+  // Listen for screen resize
+  window.addEventListener("resize", function () {
+    const scrollersProgress = document.querySelectorAll(
+      ".media-scroller__progress"
+    );
+    scrollersProgress.forEach((p) => {
+      calculateScrollerProgress(p);
+    });
+  });
 });
 
 // Create other Sliders
@@ -194,6 +244,7 @@ featuredCategories.forEach(async (c, index) => {
 const closeModal = document.getElementById("close-modal");
 closeModal.addEventListener("click", () => {
   const modal = document.getElementById("modal");
+  modal.querySelector(".card__content").innerHTML = "";
   modal.classList.remove("show-modal");
   document.body.classList.remove("noscroll");
 });
