@@ -184,7 +184,7 @@ a {
   width: 100%;
   gap: 0.25em;
   grid-template-columns: 2.5em 1fr 2.75em;
-  grid-template-rows: 1;
+  grid-template-rows: 1fr;
   grid-template-areas: "handle content handle";
 }
 .media-scroller .media-scroller__content .handle {

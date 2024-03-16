@@ -1,45 +1,4 @@
-const apiUrl = "http://localhost:8000/api/v1";
-
-const query = async (route, params) => {
-  try {
-    const response = await fetch(`${apiUrl}/${route}`, params);
-    const results = await response.json();
-
-    return results;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const getBestMovies = async () => {
-  try {
-    const { results } = await query(`titles?sort_by=-imdb_score&page_size=8`);
-    return results;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const getBestCategoryMovies = async (category) => {
-  try {
-    const { results } = await query(
-      `titles?genre=${category}&sort_by=-imdb_score&page_size=7`
-    );
-    return results;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const getMovie = async (movieId) => {
-  try {
-    const result = await query(`titles/${movieId}`);
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
+// Create scoller progress indicator
 const calculateScrollerProgress = (mediaScroller) => {
   let mediaScrollerProgress = null;
   if (mediaScroller) {
@@ -62,6 +21,7 @@ const calculateScrollerProgress = (mediaScroller) => {
   return mediaScrollerProgress;
 };
 
+// Create carousel
 const createMediaScroller = (category, index, medias) => {
   const mediaGroup = document.createElement("div");
   medias.forEach((m) => {
@@ -92,6 +52,7 @@ const createMediaScroller = (category, index, medias) => {
   return mediaScroller;
 };
 
+// Handle clic on left/right scroller handles
 const onHandleClick = (handle) => {
   const progress = handle
     .closest(".media-scroller")
@@ -134,7 +95,8 @@ const onHandleClick = (handle) => {
   }
 };
 
-onMoreInfoClick = async (data) => {
+// Handle clic to load modal
+const onMoreInfoClick = async (data) => {
   const response = await query(`titles/${data.id}`);
   const modal = document.getElementById("modal");
   const card = modal.querySelector(".card");
@@ -150,8 +112,10 @@ onMoreInfoClick = async (data) => {
   </div>
   <div class="columns">
     <div class="column span-2">
-      <p><span>${response.date_published}</span> ${response.duration}min</p>
-      <p>${response.rated}</p>
+      <p><span>Sorti le: ${response.date_published}</span> - Durée: ${
+      response.duration
+    }min</p>
+      <p>Classement: ${response.rated}</p>
       <p>Score IMDB: ${response.imdb_score}</p>
       <h3>Description:</h3>
       <p>${response.long_description}</p>
@@ -177,7 +141,7 @@ onMoreInfoClick = async (data) => {
   );
 };
 
-// Create Hero Section and first Slider
+// Create Hero Section and best movies Slider
 const featuredFilm = document.getElementById("hero");
 const featuredFilmContent = document.querySelector(".hero__content");
 const heroLink = document.getElementById("heroLink");
@@ -215,7 +179,7 @@ getBestMovies().then(async (response) => {
     });
   });
 
-  // Listen for screen resize
+  // Listen for screen resize to re calculate scroller progress
   window.addEventListener("resize", function () {
     const scrollersProgress = document.querySelectorAll(
       ".media-scroller__progress"
@@ -241,6 +205,7 @@ featuredCategories.forEach(async (c, index) => {
   }
 });
 
+// Listen for close modal events
 const closeModal = document.getElementById("close-modal");
 closeModal.addEventListener("click", () => {
   const modal = document.getElementById("modal");
