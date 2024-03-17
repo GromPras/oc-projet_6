@@ -155,12 +155,14 @@ getBestMovies().then(async (response) => {
   try {
     const movie = await getMovie(response[0].id);
     featuredFilm.style.backgroundImage = `url("${movie.image_url}")`;
-    const heroContent = `<h2>${movie.title}</h2><p>${movie.description}</p>`;
+    const heroContent = `
+<h2>${movie.title}</h2><p>${movie.description}</p>
+<div class="btns">
+  <button class="btn">&#9654; Play</button>
+  <button class="btn btn-alt" id="heroLink"><a href="${apiUrl}/titles/${movie.id}" class="movie-link" data-id="${movie.id}">&#128712; More info</a></button>
+</div>
+`;
     featuredFilmContent.insertAdjacentHTML("afterbegin", heroContent);
-    heroLink.insertAdjacentHTML(
-      "afterbegin",
-      `<a href="${apiUrl}/titles/${movie.id}" class="movie-link" data-id="${movie.id}">&#128712; More info</a>`
-    );
     response.shift();
     const mediaScroller = createMediaScroller(
       "Films les mieux notés",
@@ -196,7 +198,6 @@ getBestMovies().then(async (response) => {
       });
     });
   } catch (error) {
-    featuredFilmContent.innerHTML = "";
     alert("No response from API");
   }
 });
