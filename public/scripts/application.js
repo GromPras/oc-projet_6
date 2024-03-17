@@ -146,48 +146,53 @@ const featuredFilm = document.getElementById("hero");
 const featuredFilmContent = document.querySelector(".hero__content");
 const heroLink = document.getElementById("heroLink");
 getBestMovies().then(async (response) => {
-  const movie = await getMovie(response[0].id);
-  featuredFilm.style.backgroundImage = `url("${movie.image_url}")`;
-  const heroContent = `<h2>${movie.title}</h2><p>${movie.description}</p>`;
-  featuredFilmContent.insertAdjacentHTML("afterbegin", heroContent);
-  heroLink.insertAdjacentHTML(
-    "afterbegin",
-    `<a href="${apiUrl}/titles/${movie.id}" class="movie-link" data-id="${movie.id}">&#128712; More info</a>`
-  );
-  response.shift();
-  const mediaScroller = createMediaScroller(
-    "Films les mieux notés",
-    0,
-    response
-  );
-  mainContent.insertAdjacentHTML("afterbegin", mediaScroller);
-
-  // Listen for clicks on handles
-  const sliderHandles = document.querySelectorAll(".handle");
-  sliderHandles.forEach(function (element) {
-    element.addEventListener("click", function (event) {
-      onHandleClick(event.target);
-    });
-  });
-
-  // Listen for click on More Info or movies
-  const moreInfo = document.querySelectorAll(".movie-link");
-  moreInfo.forEach(function (element) {
-    element.addEventListener("click", function (event) {
-      event.preventDefault();
-      onMoreInfoClick(event.target.dataset);
-    });
-  });
-
-  // Listen for screen resize to re calculate scroller progress
-  window.addEventListener("resize", function () {
-    const scrollersProgress = document.querySelectorAll(
-      ".media-scroller__progress"
+  try {
+    const movie = await getMovie(response[0].id);
+    featuredFilm.style.backgroundImage = `url("${movie.image_url}")`;
+    const heroContent = `<h2>${movie.title}</h2><p>${movie.description}</p>`;
+    featuredFilmContent.insertAdjacentHTML("afterbegin", heroContent);
+    heroLink.insertAdjacentHTML(
+      "afterbegin",
+      `<a href="${apiUrl}/titles/${movie.id}" class="movie-link" data-id="${movie.id}">&#128712; More info</a>`
     );
-    scrollersProgress.forEach((p) => {
-      calculateScrollerProgress(p);
+    response.shift();
+    const mediaScroller = createMediaScroller(
+      "Films les mieux notés",
+      0,
+      response
+    );
+    mainContent.insertAdjacentHTML("afterbegin", mediaScroller);
+
+    // Listen for clicks on handles
+    const sliderHandles = document.querySelectorAll(".handle");
+    sliderHandles.forEach(function (element) {
+      element.addEventListener("click", function (event) {
+        onHandleClick(event.target);
+      });
     });
-  });
+
+    // Listen for click on More Info or movies
+    const moreInfo = document.querySelectorAll(".movie-link");
+    moreInfo.forEach(function (element) {
+      element.addEventListener("click", function (event) {
+        event.preventDefault();
+        onMoreInfoClick(event.target.dataset);
+      });
+    });
+
+    // Listen for screen resize to re calculate scroller progress
+    window.addEventListener("resize", function () {
+      const scrollersProgress = document.querySelectorAll(
+        ".media-scroller__progress"
+      );
+      scrollersProgress.forEach((p) => {
+        calculateScrollerProgress(p);
+      });
+    });
+  } catch (error) {
+    featuredFilmContent.innerHTML = "";
+    alert("No response from API");
+  }
 });
 
 // Create other Sliders
