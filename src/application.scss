@@ -318,6 +318,7 @@ a {
           gap: 0.5rem;
           grid-template-columns: repeat(3, 1fr);
           align-items: start;
+          overflow-y: scroll;
           .column {
             display: flex;
             flex-direction: column;

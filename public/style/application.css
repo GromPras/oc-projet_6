@@ -297,6 +297,7 @@ a {
   gap: 0.5rem;
   grid-template-columns: repeat(3, 1fr);
   align-items: start;
+  overflow-y: scroll;
 }
 .modal .modal__content .card .card__content .columns .column {
   display: flex;

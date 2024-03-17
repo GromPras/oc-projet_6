@@ -95,6 +95,12 @@ const onHandleClick = (handle) => {
   }
 };
 
+// Format income number
+const formatIncome = (number) =>
+  Intl.NumberFormat("fr-FR", { style: "currency", currency: "USD" }).format(
+    number
+  );
+
 // Handle clic to load modal
 const onMoreInfoClick = async (data) => {
   const response = await query(`titles/${data.id}`);
@@ -132,7 +138,7 @@ const onMoreInfoClick = async (data) => {
       <h4>Revenus mondiaux:</h4>
       <p>${
         response.worldwide_gross_income
-          ? response.worldwide_gross_income
+          ? formatIncome(response.worldwide_gross_income)
           : "Inconnu"
       }</p>
     </div>
