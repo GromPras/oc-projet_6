@@ -158,7 +158,7 @@ getBestMovies().then(async (response) => {
     const heroContent = `
 <h2>${movie.title}</h2><p>${movie.description}</p>
 <div class="btns">
-  <button class="btn">&#9654; Play</button>
+  <button class="btn">&#9654; Play trailer</button>
   <button class="btn btn-alt" id="heroLink"><a href="${apiUrl}/titles/${movie.id}" class="movie-link" data-id="${movie.id}">&#128712; More info</a></button>
 </div>
 `;
