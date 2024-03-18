@@ -188,6 +188,8 @@ a {
   overflow: clip;
   .media-scroller__header {
     display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
     justify-content: space-between;
     width: 100%;
     padding: 0.5em 2.75em;
@@ -419,6 +421,12 @@ a {
 }
 
 @media screen and (min-width: 768px) {
+  .media-scroller {
+    .media-scroller__header {
+      flex-direction: row;
+      gap: 0;
+    }
+  }
 }
 
 @media screen and (min-width: 1024px) {
