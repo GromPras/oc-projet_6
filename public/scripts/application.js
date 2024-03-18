@@ -36,6 +36,7 @@ const createMediaScroller = (category, index, medias) => {
   const mediaScroller = `
 <div class="media-scroller">
     <div class="media-scroller__header">
+        <div class="spacer"></div>
         <h2 class="media-scroller__title">${category}</h2>
         <div class="media-scroller__progress">
             ${mediaScrollerProgress.innerHTML}
